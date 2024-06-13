@@ -31,30 +31,30 @@ public class TodoappApplication {
 //    }
 
 
-    @Bean
-    public CommandLineRunner run(){
-
-        return args -> {
-            String region = "ap-northeast-2";
-
-            SsmClient ssmClient = SsmClient.builder()
-                    .region(Region.of(region))
-                    .build();
-
-
-            System.out.println("todo_DB_USERNAME:::"+getParameterValue(ssmClient,"/todo/config/DB_USERNAME"));
-            System.out.println("todo_DB_PASSWORD:::"+getParameterValue(ssmClient,"/todo/config/DB_PASSWORD"));
-        };
-    }
-
-    private String getParameterValue(SsmClient ssmClient, String parameterName) {
-        GetParameterRequest parameterRequest = GetParameterRequest.builder()
-                .name(parameterName)
-                .withDecryption(true)
-                .build();
-
-        GetParameterResponse parameterResponse = ssmClient.getParameter(parameterRequest);
-
-        return parameterResponse.parameter().value();
-    }
+//    @Bean
+//    public CommandLineRunner run(){
+//
+//        return args -> {
+//            String region = "ap-northeast-2";
+//
+//            SsmClient ssmClient = SsmClient.builder()
+//                    .region(Region.of(region))
+//                    .build();
+//
+//
+//            System.out.println("todo_DB_USERNAME:::"+getParameterValue(ssmClient,"/todo/config/DB_USERNAME"));
+//            System.out.println("todo_DB_PASSWORD:::"+getParameterValue(ssmClient,"/todo/config/DB_PASSWORD"));
+//        };
+//    }
+//
+//    private String getParameterValue(SsmClient ssmClient, String parameterName) {
+//        GetParameterRequest parameterRequest = GetParameterRequest.builder()
+//                .name(parameterName)
+//                .withDecryption(true)
+//                .build();
+//
+//        GetParameterResponse parameterResponse = ssmClient.getParameter(parameterRequest);
+//
+//        return parameterResponse.parameter().value();
+//    }
 }
