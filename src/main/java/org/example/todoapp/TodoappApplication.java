@@ -1,12 +1,14 @@
 package org.example.todoapp;
 
 import org.example.todoapp.repository.TodoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.GetParameterRequest;
 import software.amazon.awssdk.services.ssm.model.GetParameterResponse;
@@ -30,31 +32,33 @@ public class TodoappApplication {
 //        };
 //    }
 
+    @Autowired
+    private S3Client s3Client;
 
-//    @Bean
-//    public CommandLineRunner run(){
-//
-//        return args -> {
-//            String region = "ap-northeast-2";
-//
-//            SsmClient ssmClient = SsmClient.builder()
-//                    .region(Region.of(region))
-//                    .build();
-//
-//
-//            System.out.println("todo_DB_USERNAME:::"+getParameterValue(ssmClient,"/todo/config/DB_USERNAME"));
-//            System.out.println("todo_DB_PASSWORD:::"+getParameterValue(ssmClient,"/todo/config/DB_PASSWORD"));
-//        };
-//    }
-//
-//    private String getParameterValue(SsmClient ssmClient, String parameterName) {
-//        GetParameterRequest parameterRequest = GetParameterRequest.builder()
-//                .name(parameterName)
-//                .withDecryption(true)
-//                .build();
-//
-//        GetParameterResponse parameterResponse = ssmClient.getParameter(parameterRequest);
-//
-//        return parameterResponse.parameter().value();
-//    }
+    @Bean
+    public CommandLineRunner run(){
+
+        return args -> {
+            String region = "ap-northeast-2";
+
+            SsmClient ssmClient = SsmClient.builder()
+                    .region(Region.of(region))
+                    .build();
+
+
+            System.out.println("todo_DB_USERNAME:::"+getParameterValue(ssmClient,"/todo/config/DB_USERNAME"));
+            System.out.println("todo_DB_PASSWORD:::"+getParameterValue(ssmClient,"/todo/config/DB_PASSWORD"));
+        };
+    }
+
+    private String getParameterValue(SsmClient ssmClient, String parameterName) {
+        GetParameterRequest parameterRequest = GetParameterRequest.builder()
+                .name(parameterName)
+                .withDecryption(true)
+                .build();
+
+        GetParameterResponse parameterResponse = ssmClient.getParameter(parameterRequest);
+
+        return parameterResponse.parameter().value();
+    }
 }
